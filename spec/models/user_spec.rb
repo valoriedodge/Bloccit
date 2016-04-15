@@ -36,4 +36,13 @@ RSpec.describe User, type: :model do
         end
         
     end
+    
+    describe "name formatting" do
+        let(:user_name) { User.new(name: "joe line", email: "joe@line.com", password: "password") }
+        it "should be capitalized" do
+            user_name.save!
+            expect(user_name).to have_attributes(name: "Joe Line")
+        end
+    end
+            
 end
