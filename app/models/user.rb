@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
     before_save { self.email = email.downcase }
     before_save { self.role ||= :member }
     has_many :posts
+    has_many :comments
     
     # #3
     validates :name, length: { minimum: 1, maximum: 100 }, presence: true
