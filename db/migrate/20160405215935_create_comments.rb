@@ -6,8 +6,5 @@ class CreateComments < ActiveRecord::Migration
 
       t.timestamps null: false
     end
-    change_table :comments do |t|
-        t.remove :post
-    end
   end
 end

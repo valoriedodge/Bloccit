@@ -36,12 +36,21 @@ posts = Post.all
 
 # Create Comments
 # #3
-100.times do
-    Comment.create!(
+50.times do
+    post_comment = Comment.create!(
     # #4
     user: users.sample,
     body: RandomData.random_paragraph
 )
+posts.sample.comments << post_comment
+end
+
+50.times do
+    topic_comment = Comment.create!(
+        user: users.sample,
+        body: RandomData.random_paragraph
+    )
+    topics.sample.comments << topic_comment
 end
 
 # Create an admin user

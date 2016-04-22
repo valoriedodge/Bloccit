@@ -4,20 +4,21 @@ class CommentsController < ApplicationController
     before_action :authorize_user, only: [:destroy]
     
     def create
-        # #11
-        if type == "Post"
-            @post = Post.find(params[:post_id])
-            comment = @post.comments.new(comment_params)
-        else
-            @topic = Topic.find(params[:topic_id])
-            comment = @topic.comments.new(comment_params)
-        end
         
         comment.user = current_user
         
+        if type == "Post"
+            @post = Post.find(params[:post_id])
+            @post.comments << Comment.new(comment_params)
+        else
+            @topic = Topic.find(params[:topic_id])
+            @topic.comments << Comment.new(comment_params)
+        end
+
+        
         if comment.save
             flash[:notice] = "Comment saved successfully."
-            # #12
+            
             if type == "Post"
             redirect_to [@post.topic, @post]
             else
@@ -25,7 +26,7 @@ class CommentsController < ApplicationController
             end
         else
             flash[:alert] = "Comment failed to save."
-            # #13
+           
             if type == "Post"
                 redirect_to [@post.topic, @post]
             else
@@ -35,21 +36,26 @@ class CommentsController < ApplicationController
     end
     
     def destroy
-        @post = Post.find(params[:post_id])
-        comment = @post.comments.find(params[:id])
+        if type == "Post"
+            @post = Post.find(params[:post_id])
+            comment = @post.comments.find(params[:id])
+        else
+            @topic = Topic.find(params[:topic_id])
+            comment = @topic.comments.find(params[:id])
+        end
         
         if comment.destroy
             flash[:notice] = "Comment was deleted successfully."
             if type == "Post"
                 redirect_to [@post.topic, @post]
-                else
+            else
                 redirect_to [@topic]
             end
         else
             flash[:alert] = "Comment couldn't be deleted. Try again."
             if type == "Post"
                 redirect_to [@post.topic, @post]
-                else
+            else
                 redirect_to [@topic]
             end
         end
@@ -72,7 +78,7 @@ class CommentsController < ApplicationController
     
     def post_or_topic
         type = "Topic"
-        if Comment.find(params[:commentable_id]) == Post
+        if Comment.find(params[:id].posts
             type = "Post"
         end
     end
