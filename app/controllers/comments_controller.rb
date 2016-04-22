@@ -1,21 +1,36 @@
 class CommentsController < ApplicationController
     before_action :require_sign_in
+    before_action :post_or_topic
     before_action :authorize_user, only: [:destroy]
     
     def create
         # #11
-        @post = Post.find(params[:post_id])
-        comment = @post.comments.new(comment_params)
+        if type == "Post"
+            @post = Post.find(params[:post_id])
+            comment = @post.comments.new(comment_params)
+        else
+            @topic = Topic.find(params[:topic_id])
+            comment = @topic.comments.new(comment_params)
+        end
+        
         comment.user = current_user
         
         if comment.save
             flash[:notice] = "Comment saved successfully."
             # #12
+            if type == "Post"
             redirect_to [@post.topic, @post]
             else
+            redirect_to [@topic]
+            end
+        else
             flash[:alert] = "Comment failed to save."
             # #13
-            redirect_to [@post.topic, @post]
+            if type == "Post"
+                redirect_to [@post.topic, @post]
+            else
+                redirect_to [@topic]
+            end
         end
     end
     
@@ -25,10 +40,18 @@ class CommentsController < ApplicationController
         
         if comment.destroy
             flash[:notice] = "Comment was deleted successfully."
-            redirect_to [@post.topic, @post]
-            else
+            if type == "Post"
+                redirect_to [@post.topic, @post]
+                else
+                redirect_to [@topic]
+            end
+        else
             flash[:alert] = "Comment couldn't be deleted. Try again."
-            redirect_to [@post.topic, @post]
+            if type == "Post"
+                redirect_to [@post.topic, @post]
+                else
+                redirect_to [@topic]
+            end
         end
     end
     
@@ -46,4 +69,12 @@ class CommentsController < ApplicationController
             redirect_to [comment.post.topic, comment.post]
         end
     end
+    
+    def post_or_topic
+        type = "Topic"
+        if Comment.find(params[:commentable_id]) == Post
+            type = "Post"
+        end
+    end
+        
 end

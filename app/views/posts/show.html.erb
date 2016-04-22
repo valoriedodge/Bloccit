@@ -20,7 +20,7 @@
      </div>
      <% if current_user %>
 <!-- #20 -->
-      <%= render 'comments/form', comment: Comment.new, post: @post %>
+      <%= render 'comments/form', comment: Comment.new %>
     <% end %>
    </div>
    <% if user_is_authorized_for_post?(@post) %>
