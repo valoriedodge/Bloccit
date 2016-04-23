@@ -34,12 +34,10 @@
       <% end %>
    <div>
      <h3>Comments</h3>
-     <%= render @topic.comments %>
+     <%= render partial: "comments/comment", locals: { parent: @topic, comments: @topic.comments } %>
    </div>
    <% if current_user %>
-
-    <%= render 'comments/form', comment: @topic.comments %>
-
+   <%= render partial: "comments/form", locals: { parent: @topic, comment: @comment, greeting: "Add a Topic Comment" } %>
   <% end %>
 
 
