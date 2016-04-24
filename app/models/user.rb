@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
     has_many :posts, dependent: :destroy
     has_many :comments, dependent: :destroy
     has_many :votes, dependent: :destroy
+    has_many :favorites, dependent: :destroy
     
     # #3
     validates :name, length: { minimum: 1, maximum: 100 }, presence: true
@@ -19,4 +20,8 @@ class User < ActiveRecord::Base
     # #6
     has_secure_password
     enum role: [:member, :admin]
+    
+    def favorite_for(post)
+        favorites.where(post_id: post.id).first
+    end
 end
