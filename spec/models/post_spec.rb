@@ -82,5 +82,22 @@ RSpec.describe Post, type: :model do
                 expect(post.rank).to eq (old_rank - 1)
             end
         end
+        
+        describe "create_vote callback" do
+            
+            it "triggers create_vote on save" do
+                new_post = topic.posts.new(title: "New Title", body: "This is the post body.", user: user)
+                expect(new_post).to receive(:create_vote).at_least(:once)
+                new_post.save!
+            end
+            
+            it "should increase points by 1" do
+                new_second_post = topic.posts.create!(title: "Second Title", body: "This is the post body.", user: user)
+                expect(new_second_post.points ).to eq(1)
+            end
+            
+        end
     end
+    
+    
 end
