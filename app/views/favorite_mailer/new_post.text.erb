@@ -1,0 +1,9 @@
+Your new post "<%= @post.title %>"
+ <%= "=" * (@post.title.length + 12) %>
+ <%= @post.body %>
+
+ <p>
+   You will automatically get updates whenever someone comments on your new post. If you would like to stop receiving the email notifications, simply go to your post and click "Unfavorite"
+ </p>
+
+ Visit online at: <%= topic_post_url(@post.topic, @post) %>
