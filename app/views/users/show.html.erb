@@ -18,9 +18,30 @@
      </div>
    </div>
  </div>
-
+<% if @user.posts[0] %>
  <h2>Posts</h2>
  <%= render @user.posts %>
+ <% else %>
+ <h4><%=@user.name%> has not submitted any posts yet.</h4>
+ <% end %>
+ <% if @user.comments[0] %>
+  <h2>Comments</h2>
+  <%= render @user.comments %>
+  <% else %>
+  <h4><%=@user.name%> has not submitted any comments yet.</h4>
+  <% end %>
 
- <h2>Comments</h2>
- <%= render @user.comments %>
+ <% if @user.favorites[0] %>
+    <h2>Favorite Posts</h2>
+    <% @user.favorites.each do |favorite| %>
+      <% avatar_url = favorite.user.avatar_url(128) %>
+      <% if avatar_url %>
+        <div class="media-left">
+          <%= image_tag avatar_url, class: 'gravatar' %>
+        </div>
+      <% end %>
+        <%= render({ partial: 'posts/post', locals: {post: favorite.post} })%>
+      <% end %>
+  <% else %>
+  <h4><%=@user.name%> has not favorited any posts yet.</h4>
+  <% end %>
