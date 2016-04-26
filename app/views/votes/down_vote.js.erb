@@ -1,0 +1,8 @@
+<% if @vote.down_vote? %>
+   $('.js-post-points').html("<%= pluralize(@post.points, 'point') %>");
+   $('.js-post-up-votes').html("<%= pluralize(@post.up_votes, 'up vote') %>");
+   $('.js-post-down-votes').html("<%= pluralize(@post.down_votes, 'down vote') %>");
+   $('.js-points').html("<%= post.points %>");
+ <% else %>
+   $('.flash').prepend("<div class='alert alert-danger'><button type='button' class='close' data-dismiss='alert'>&times;</button><%= flash.now[:alert] %></div>");
+ <% end %>
