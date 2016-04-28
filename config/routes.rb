@@ -29,4 +29,12 @@ Rails.application.routes.draw do
       end
   end
   
+  namespace :api do
+      namespace :v1 do
+          resources :topics do
+              resources :posts, except: [:edit, :new, :show, :index]
+          end
+      end
+  end
+  
 end
