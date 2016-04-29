@@ -1,6 +1,6 @@
 class Api::V1::PostsController < Api::V1::BaseController
     before_action :authenticate_user
-    before_action :authorize_user, except: [:create]
+    before_action :authorize_user
     
     def update
         post = Post.find(params[:id])
@@ -15,7 +15,9 @@ class Api::V1::PostsController < Api::V1::BaseController
     def create
         topic = Topic.find(params[:topic_id])
         post = topic.posts.create(post_params)
-        user = current_user
+        post.user = current_user
+        puts current_user.inspect
+        puts post.errors.inspect
         
         if post.valid?
             post.save!
