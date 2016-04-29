@@ -26,8 +26,7 @@ RSpec.describe Api::V1::PostsController, type: :controller do
     context "signed in user" do
         before do
             controller.request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(my_user.auth_token)
-            controller.authenticate_user
-            @new_post = build(:post, topic: my_topic)
+            @new_post = build(:post)
         end
         
         describe "PUT update" do
@@ -48,8 +47,7 @@ RSpec.describe Api::V1::PostsController, type: :controller do
         end
         describe "POST create" do
             before do
-                my_topic
-                post :create, topic_id: my_topic.id, post: {title: @new_post.title, body: @new_post.body, user: my_user, topic: my_topic}
+                post :create, topic_id: my_topic.id, post: {title: @new_post.title, body: @new_post.body}
             end
             
             it "returns http success" do
